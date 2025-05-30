@@ -1,6 +1,5 @@
 package com.chat.view;
 
-
 import com.chat.controller.ServerController;
 
 import javax.swing.*;
@@ -11,6 +10,7 @@ public class ServerUI extends JFrame {
     private JTextArea chatArea;
     private JTextArea messageArea;
     private JButton sendButton;
+    private JButton recordButton;
     private JButton emojiButton;
     private JDialog emojiDialog;
 
@@ -49,27 +49,30 @@ public class ServerUI extends JFrame {
         JScrollPane msgScroll = new JScrollPane(messageArea);
         inputPanel.add(msgScroll, BorderLayout.CENTER);
 
-        // زر الإيموجي
         emojiButton = new JButton("😊");
-        emojiButton.setBackground(Color.yellow);
+        emojiButton.setBackground(Color.YELLOW);
         emojiButton.setFocusPainted(false);
         emojiButton.addActionListener(e -> showEmojiPanel());
 
-        // زر الإرسال
+        recordButton = new JButton("🎙");
+        recordButton.setBackground(Color.GREEN.darker());
+        recordButton.setForeground(Color.WHITE);
+        recordButton.setFocusPainted(false);
+        recordButton.addActionListener(e -> controller.recordAndSendAudio());
+
         sendButton = new JButton("Send");
         sendButton.setBackground(new Color(0, 122, 255));
         sendButton.setForeground(Color.WHITE);
         sendButton.setFocusPainted(false);
 
-        // لوحة الأزرار
-        JPanel buttonPanel = new JPanel(new BorderLayout(5, 5));
-        
+       JPanel buttonPanel = new JPanel(new BorderLayout(5, 5));
         buttonPanel.add(emojiButton, BorderLayout.WEST);
-        buttonPanel.add(sendButton, BorderLayout.EAST);
-
+        buttonPanel.add(recordButton, BorderLayout.EAST);
+        buttonPanel.add(sendButton, BorderLayout.CENTER);
         inputPanel.add(buttonPanel, BorderLayout.EAST);
         add(inputPanel, BorderLayout.SOUTH);
 
+        // إنشاء الـ Controller وتمرير UI فقط
         controller = new ServerController(this);
 
         sendButton.addActionListener(e -> {
@@ -85,7 +88,7 @@ public class ServerUI extends JFrame {
                 controller.startServer();
             }
         });
-        
+
         setVisible(true);
     }
 
@@ -94,7 +97,6 @@ public class ServerUI extends JFrame {
             emojiDialog = new JDialog(this, false);
             emojiDialog.setUndecorated(true);
             emojiDialog.setSize(300, 300);
-           
             emojiDialog.setLocationRelativeTo(emojiButton);
 
             JPanel panel = new JPanel(new GridLayout(5, 8, 4, 4));
@@ -121,9 +123,4 @@ public class ServerUI extends JFrame {
         chatArea.append(msg + "\n\n");
         chatArea.setCaretPosition(chatArea.getDocument().getLength());
     }
-   
-    
-        
-    }
-    
-
+}

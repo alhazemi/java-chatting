@@ -1,38 +1,30 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.chat.controller;
 
-
 import com.chat.model.MessageModel;
+
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- *
- * @author HP
- */
 public class MessageController {
-    
-     private   MessageModel messageModel;
-    
-        public void sendMessage(int sand_id ,int r_id,String message ) {
-            messageModel=new MessageModel(sand_id, r_id, message);
-            if(!messageModel.sendMessage()){
-            
-            }
+
+    private MessageModel messageModel;
+
+    // إرسال رسالة من مستخدم لآخر
+    public void sendMessage(int senderId, int receiverId, String messageText) {
+        messageModel = new MessageModel(senderId, receiverId, messageText);
+        if (!messageModel.sendMessage()) {
+            System.err.println("فشل في إرسال الرسالة إلى قاعدة البيانات.");
+        }
     }
 
-    public void loadConversation(int userA, int userB) {
-            List<MessageModel> messages ;
-            try{
-             messages = messageModel.getAllMessage(userA, userB);
-                    for(MessageModel msag:messages){
-                          
-                 }
-            }catch(SQLException e){
-            
-            }
+    // تحميل المحادثة بين مستخدمين
+    public List<MessageModel> loadConversation(int userA, int userB) {
+        messageModel = new MessageModel();
+        try {
+            return messageModel.getAllMessage(userA, userB);
+        } catch (SQLException e) {
+            System.err.println("خطأ في تحميل المحادثة: " + e.getMessage());
+            return null;
+        }
     }
 }

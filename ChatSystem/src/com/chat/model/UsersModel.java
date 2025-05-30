@@ -24,9 +24,23 @@ public class UsersModel {
     private String password;
     private String status;
     private String phone_number;
-    
+    private static final  Connection conn = DatabaseConnection.getInstance().getConnection();
 
-    public UsersModel(String full_name, String email, String password) {
+    public UsersModel(int user_id, String full_name, String status) {
+        this.user_id = user_id;
+        this.full_name = full_name;
+        this.status = status;
+    }
+    
+     public UsersModel(String email, String password) {
+        this.email = email;
+        this.password = password;
+        
+    }
+    
+    
+    
+    public UsersModel(String full_name, String email, String password ) {
         this.full_name = full_name;
         this.email = email;
         this.password = password;
@@ -38,7 +52,7 @@ public class UsersModel {
         this.email = email;
         this.password = password;
         this.phone_number = phone_number;
-        this.status = "offline";
+       
     }
 
     public int getUser_id() {
@@ -115,6 +129,7 @@ public class UsersModel {
         }
         return false;
     }
+   
     public static UsersModel login(String email, String password) {
         Connection conn = DatabaseConnection.getInstance().getConnection();
         String sql = "select * from users where email = ? and password = ?";
@@ -135,7 +150,7 @@ public class UsersModel {
                 );
                 user.setUser_id(rs.getInt("user_id"));
                 user.setStatus("online");
-                user.updateStatus();
+                user.updateStatus("online",rs.getInt("user_id"));
                 return user;
             }
         } catch (SQLException ex) {
@@ -144,7 +159,8 @@ public class UsersModel {
         return null;
 
     }
-     public boolean updateStatus() {
+    
+     public boolean updateStatus(String status,int user_id) {
         Connection conn = DatabaseConnection.getInstance().getConnection();
         String sql = "UPDATE USERS set status = ? where user_id = ?";
 
@@ -159,8 +175,41 @@ public class UsersModel {
         }
         return false;
     }
+
+    public static List<UsersModel> getAllUsers() {
+        List<UsersModel> users = new ArrayList<>();
+
+        Connection conn = DatabaseConnection.getInstance().getConnection();
+
+        String sql = "Select * from users";
+        Statement stmt;
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                UsersModel user = new UsersModel(
+                        rs.getString("full_name"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("phone_number")
+
+                );
+                user.setStatus(rs.getString("status"));
+                user.setUser_id(rs.getInt("user_id"));
+                users.add(user);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return users;
+    }
+
     public boolean logout() {
         this.setStatus("offline");
-        return this.updateStatus();
+        return this.updateStatus("offlone",getUser_id());
     }
 }
+
+   

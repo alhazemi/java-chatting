@@ -19,6 +19,7 @@ public class LoginView extends JFrame {
     private JButton loginButton;
     private JButton registerButton;
     private JPanel mainPanel;
+    public boolean  sseccefully=false;
 
     public LoginView() {
         controller = new LoginController(this);
@@ -121,16 +122,19 @@ public class LoginView extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    private void handleLogin() {
+    public boolean handleLogin() {
         String email = emailField.getText();
         String password = new String(passwordField.getPassword());
-
+        
         if (email.isEmpty() || password.isEmpty()) {
-            showError("Please fill in all fields");
-            return;
+           
+            return false;
+            
         }
-
         controller.login(email, password);
+        
+       return sseccefully;
+        
     }
 
     private void handleRegister() {

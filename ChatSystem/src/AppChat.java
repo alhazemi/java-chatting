@@ -1,18 +1,19 @@
+
+import com.chat.view.LoginView;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.chat.server;
 
-import com.chat.view.LoginView;
-
-public class ServerMain {
-
+/**
+ *
+ * @author HP
+ */
+public class AppChat {
     public static void main(String[] args) {
-
-        LoginView loginForm = new LoginView();
-        loginForm.setVisible(true);
-
+        LoginView view= new LoginView();
+        view.setVisible(true);
+        
     }
 }
-

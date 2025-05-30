@@ -83,6 +83,7 @@ public class ClientUI extends JFrame {
         });
 
         controller.startClient();
+        this.setVisible(true);
     }
 
     private void showEmojiPanel() {

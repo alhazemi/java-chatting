@@ -1,5 +1,6 @@
 package com.chat.view;
 
+
 import com.chat.controller.ServerController;
 
 import javax.swing.*;
@@ -84,6 +85,8 @@ public class ServerUI extends JFrame {
                 controller.startServer();
             }
         });
+        
+        setVisible(true);
     }
 
     private void showEmojiPanel() {
@@ -118,8 +121,9 @@ public class ServerUI extends JFrame {
         chatArea.append(msg + "\n\n");
         chatArea.setCaretPosition(chatArea.getDocument().getLength());
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ServerUI().setVisible(true));
+   
+    
+        
     }
-}
+    
+

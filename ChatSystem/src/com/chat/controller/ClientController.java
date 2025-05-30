@@ -16,6 +16,10 @@ public class ClientController {
         this.ui = ui;
     }
 
+    public ClientController() {
+    }
+    
+
     public void startClient() {
         try {
             socket = new Socket("localhost", 4789);
